@@ -15,7 +15,7 @@ In order to mimic templates in C++, every container allowed generic type and cus
   
 ## Usage  
 Every container includes a declaration macro. Generally you need to pass:  
-- type use in the container  
+- type used in the container  
 - name for the struct of the container  
 - prefix name for all the "member" functions  
 - constructor for the type  
