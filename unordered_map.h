@@ -62,7 +62,7 @@ extern inline int function_prefix##_default_prober(keyT key, int (*hash)(keyT), 
     /*Double hashing*/\
     const int _Hash_Res = hash(key);\
     const int result = (_Hash_Res + /*First hash*/ \
-        i * ((_Hash_Res | 1) % (m - 1) + 1) /*First hash*/ \
+        i * ((_Hash_Res) % (m - 1) + 1) /*First hash*/ \
     ) % m;\
     if (result < 0) {\
         return result + m;\
@@ -103,6 +103,8 @@ extern inline valueT function_prefix##_at(name* map, keyT key);\
 extern inline valueT* function_prefix##_at_ptr(name* map, keyT key);\
 extern inline keyT function_prefix##_get_index_key(name* map, int index);\
 extern inline valueT function_prefix##_get_index_value(name* map, int index);\
+extern inline keyT* function_prefix##_get_index_key_ptr(name* map, int index);\
+extern inline valueT* function_prefix##_get_index_value_ptr(name* map, int index);\
 extern inline void function_prefix##_insert(name* map, keyT key, valueT value);\
 extern inline void function_prefix##_insert_key(name* map, keyT key);\
 extern inline bool function_prefix##_contains(name* map, keyT key);\
@@ -276,6 +278,12 @@ extern inline valueT function_prefix##_get_index_value(name* map, int index){\
     valueT ret;\
     map->_value_copy_constructor(&ret, &map->data[index].value);\
     return ret;\
+}\
+extern inline keyT* function_prefix##_get_index_key_ptr(name* map, int index){\
+    return &map->data[index].key;\
+}\
+extern inline valueT* function_prefix##_get_index_value_ptr(name* map, int index){\
+    return &map->data[index].value;\
 }\
 extern inline void function_prefix##_insert(name* map, keyT key, valueT value){\
     if (function_prefix##_load_factor(map) >= map->max_load_factor) {\

@@ -7,6 +7,9 @@
 #include "unordered_set.h"
 #include <stdio.h>
 
+DeclareMap(int, int, IIMap, ii_map, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+IIMap map;
 int stringCMP(String* a, String* b) {
 	return strcmp(a->data, b->data);
 }
@@ -45,6 +48,25 @@ DeclareVectorCmp(IFPair, PairVector, pair_vector, if_pair_initialize, if_pair_co
 DeclareUnorderedMapCmpHash(String, PairSet, String2PairUMap, pairl_umap, stringHash, NULL, stringCMP, string_initialize, string_copy, string_destroy, pair_set_initialize, pair_set_copy, pair_set_destroy);
 DeclareMapCmp(String, PairSet, String2PairMap, pairl_map, stringCMP, string_initialize, string_copy, string_destroy, pair_set_initialize, pair_set_copy, pair_set_destroy);
 
+DeclareUnorderedSet(int, IUSet, iu_set, NULL, NULL, NULL, NULL)
+IUSet set;
+
+int main() {
+	iu_set_initialize(&set);
+
+	for (int i = 0; i < 100; ++i) {
+		iu_set_insert(&set, i * 3);
+	}
+
+	for (int i = 0; i < set.capacity; ++i) {
+		if (!iu_set_valid_index(&set, i)) {
+			continue;
+		}
+		int value = iu_set_get_index_value(&set, i);
+		int* value_ptr = iu_set_get_index_value_ptr(&set, i);
+		printf("%d\n", value);
+	}
+}
 
 int main1() {
 	String2PairMap* map = pairl_map_create();

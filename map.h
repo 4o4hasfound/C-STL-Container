@@ -63,7 +63,7 @@ extern inline void function_prefix##_destroy(name* map);\
 extern inline void function_prefix##_destroy_ptr(name* map);\
 extern inline void function_prefix##_insert(name* map, keyT key, valueT value);\
 extern inline void function_prefix##_insert_key(name* map, keyT key);\
-extern inline void function_prefix##_erase(name* map, keyT key, valueT value);\
+extern inline void function_prefix##_erase(name* map, keyT key);\
 extern inline valueT function_prefix##_at(name* map, keyT key);\
 extern inline valueT* function_prefix##_at_ptr(name* map, keyT key);\
 extern inline keyT function_prefix##_front_key(name* map);\
@@ -74,6 +74,11 @@ extern inline name##_Node* function_prefix##_front_node(name* map);\
 extern inline name##_Node* function_prefix##_back_node(name* map);\
 extern inline name##_Node* function_prefix##_next_forward_node(name* map, name##_Node* node);\
 extern inline name##_Node* function_prefix##_next_backward_node(name* map, name##_Node* node);\
+extern inline keyT function_prefix##_at_node_key(name* map, name##_Node* node);\
+extern inline valueT function_prefix##_at_node_value(name* map, name##_Node* node);\
+extern inline keyT* function_prefix##_at_node_key_ptr(name* map, name##_Node* node);\
+extern inline valueT* function_prefix##_at_node_value_ptr(name* map, name##_Node* node);\
+extern inline bool function_prefix##_contain(name* map, keyT key);\
 \
 extern inline void function_prefix##_rbtree_left_rotation(name* map, name##_Node* node);\
 extern inline void function_prefix##_rbtree_right_rotation(name* map, name##_Node* node);\
@@ -266,6 +271,25 @@ extern inline name##_Node* function_prefix##_next_backward_node(name* map, name#
         node = node->parent;\
     }\
     return NULL;\
+}\
+extern inline keyT function_prefix##_at_node_key(name* map, name##_Node* node){\
+    keyT ret;\
+    map->_key_copy_constructor(&ret, &node->key);\
+    return ret;\
+}\
+extern inline valueT function_prefix##_at_node_value(name* map, name##_Node* node){\
+    valueT ret;\
+    map->_value_copy_constructor(&ret, &node->value);\
+    return ret;\
+}\
+extern inline keyT* function_prefix##_at_node_key_ptr(name* map, name##_Node* node){\
+    return &node->key;\
+}\
+extern inline valueT* function_prefix##_at_node_value_ptr(name* map, name##_Node* node){\
+    return &node->value;\
+}\
+extern inline bool function_prefix##_contain(name* map, keyT key){\
+    return function_prefix##_rbtree_search(map, key) != NULL;\
 }\
 \
 extern inline void function_prefix##_rbtree_left_rotation(name* map, name##_Node* x){\

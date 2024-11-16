@@ -50,12 +50,15 @@ extern inline void function_prefix##_destroy_ptr(name* set);\
 extern inline void function_prefix##_insert(name* set, type value);\
 extern inline void function_prefix##_erase(name* set, type value);\
 extern inline name##_Node* function_prefix##_at(name* set, type value);\
+extern inline bool function_prefix##_contain(name* set, type value);\
 extern inline type function_prefix##_front(name* set);\
 extern inline type function_prefix##_back(name* set);\
 extern inline name##_Node* function_prefix##_front_node(name* set);\
 extern inline name##_Node* function_prefix##_back_node(name* set);\
 extern inline name##_Node* function_prefix##_next_forward_node(name* set, name##_Node* node);\
 extern inline name##_Node* function_prefix##_next_backward_node(name* set, name##_Node* node);\
+extern inline type function_prefix##_at_node(name* set, name##_Node* node);\
+extern inline type* function_prefix##_at_node_ptr(name* set, name##_Node* node);\
 \
 extern inline void function_prefix##_rbtree_left_rotation(name* set, name##_Node* node);\
 extern inline void function_prefix##_rbtree_right_rotation(name* set, name##_Node* node);\
@@ -68,7 +71,6 @@ extern inline name##_Node* function_prefix##_rbtree_search(name* set, type value
 extern inline name##_Node* function_prefix##_rbtree_leftmost(name* set, name##_Node* current);\
 extern inline name##_Node* function_prefix##_rbtree_rightmost(name* set, name##_Node* current);\
 extern inline void function_prefix##_rbtree_free(name* set, name##_Node* current);\
-extern inline void function_prefix##_print(name* set, name##_Node* node, int depth);\
 \
 extern inline name* function_prefix##_create(){\
     name* set = (name*)malloc(sizeof(name));\
@@ -149,6 +151,9 @@ extern inline void function_prefix##_erase(name* set, type value){\
 extern inline name##_Node* function_prefix##_at(name* set, type value){\
     return function_prefix##_rbtree_search(set, value);\
 }\
+extern inline bool function_prefix##_contain(name* set, type value){\
+    return function_prefix##_rbtree_search(set, value) != NULL;\
+}\
 extern inline type function_prefix##_front(name* set){\
     type ret;\
     set->_copy_constructor(&ret, &function_prefix##_front_node(set)->value);\
@@ -202,6 +207,14 @@ extern inline name##_Node* function_prefix##_next_backward_node(name* set, name#
         node = node->parent;\
     }\
     return NULL;\
+}\
+extern inline type function_prefix##_at_node(name* set, name##_Node* node){\
+    type ret;\
+    set->_copy_constructor(&ret, &node->value);\
+    return ret;\
+}\
+extern inline type* function_prefix##_at_node_ptr(name* set, name##_Node* node){\
+    return &node->value;\
 }\
 \
 extern inline void function_prefix##_rbtree_left_rotation(name* set, name##_Node* x){\
@@ -461,20 +474,4 @@ extern inline void function_prefix##_rbtree_free(name* set, name##_Node* current
     function_prefix##_rbtree_free(set, current->left);\
     function_prefix##_rbtree_free(set, current->right);\
     free(current);\
-}\
-extern inline void function_prefix##_print(name* set, name##_Node* node, int depth) {\
-    for(int i = 0; i < depth; ++i) {\
-        printf("    ");\
-    }\
-    printf("- ");\
-    if (node == set->nil) {\
-        printf("NIL\n");\
-        return;\
-    }\
-    printf("%d\n", node->value);\
-    if (node->left)\
-    function_prefix##_print(set, node->left, depth+1);\
-    if (node->right)\
-    function_prefix##_print(set, node->right, depth+1);\
 }
-

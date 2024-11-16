@@ -53,7 +53,7 @@ extern inline int function_prefix##_default_prober(type value, int (*hash)(type)
     /*Double hashing*/\
     const int _Hash_Res = hash(value);\
     const int result = (_Hash_Res + /*First hash*/ \
-        i * ((_Hash_Res | 1) % (m - 1) + 1) /*First hash*/ \
+        i * ((_Hash_Res) % (m - 1) + 1) /*First hash*/ \
     ) % m;\
     if (result < 0) {\
         return result + m;\
@@ -88,7 +88,8 @@ extern inline name##_Node* function_prefix##_extract(name* uset, type value);\
 extern inline void function_prefix##_merge(name* uset, name* other);\
 extern inline void function_prefix##_insert(name* uset, type value);\
 extern inline type function_prefix##_get_index_value(name* uset, int index);\
-extern inline bool function_prefix##_contains(name* uset, type value);\
+extern inline type* function_prefix##_get_index_value_ptr(name* uset, int index);\
+extern inline bool function_prefix##_contain(name* uset, type value);\
 extern inline float function_prefix##_load_factor(name* uset);\
 extern inline bool function_prefix##_valid_index(name* uset, int index);\
 extern inline void function_prefix##_reallocate(name* uset, int size);\
@@ -221,6 +222,9 @@ extern inline type function_prefix##_get_index_value(name* uset, int index){\
     uset->_copy_constructor(&ret, &uset->data[index].value);\
     return ret;\
 }\
+extern inline type* function_prefix##_get_index_value_ptr(name* uset, int index){\
+    return &uset->data[index].value;\
+}\
 extern inline void function_prefix##_insert(name* uset, type value){\
     if (function_prefix##_load_factor(uset) >= uset->max_load_factor) {\
         function_prefix##_reallocate(uset, uset->capacity * 2);\
@@ -237,7 +241,7 @@ extern inline void function_prefix##_insert(name* uset, type value){\
         uset->_copy_constructor(&uset->data[index].value, &value);\
     }\
 }\
-extern inline bool function_prefix##_contains(name* uset, type value){\
+extern inline bool function_prefix##_contain(name* uset, type value){\
     int index = function_prefix##_get_index(uset, uset->data, uset->capacity, value);\
     return index < uset->capacity && uset->data[index].occupied;\
 }\

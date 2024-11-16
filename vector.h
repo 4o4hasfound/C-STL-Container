@@ -256,7 +256,7 @@ extern inline void function_prefix##_resize(name* vector, int size) {\
         return;\
     }\
     if (vector->size + size > vector->capacity) {\
-        function_prefix##_reallocate(vector, max(vector->capacity * 2, size * 2));\
+        function_prefix##_reallocate(vector, max(vector->capacity * 2, vector->capacity + size));\
     }\
     for(int i = size; i < vector->size; ++i) {\
         vector->_destructor(function_prefix##_at_ptr(vector, i));\
@@ -306,7 +306,7 @@ extern inline bool function_prefix##_equal(name* a, name* b){\
 }\
 extern inline void function_prefix##_insert_vector(name* vector, name* other, int index){\
     if (vector->size + other->size > vector->capacity) {\
-        function_prefix##_reallocate(vector, max(vector->capacity * 2, other->size * 2));\
+        function_prefix##_reallocate(vector, max(vector->capacity * 2, vector->capacity + other->size));\
     }\
     for(int i = vector->size - 1 + other->size; i > index + other->size - 1; --i) {\
         vector->_destructor(&vector->data[i]);\
@@ -331,7 +331,7 @@ extern inline void function_prefix##_insert_vector_range(name* vector, name* oth
     if (from <= to) {\
         int size = to - from + 1;\
         if (vector->size + size > vector->capacity) {\
-            function_prefix##_reallocate(vector, max(vector->capacity * 2, other->size * 2));\
+            function_prefix##_reallocate(vector, max(vector->capacity * 2, vector->capacity + other->size));\
         }\
         for(int i = vector->size - 1 + size; i > index + size - 1; --i) {\
             vector->_destructor(&vector->data[i]);\
@@ -346,7 +346,7 @@ extern inline void function_prefix##_insert_vector_range(name* vector, name* oth
     else {\
         int size = from - to + 1;\
         if (vector->size + size > vector->capacity) {\
-            function_prefix##_reallocate(vector, max(vector->capacity * 2, other->size * 2));\
+            function_prefix##_reallocate(vector, max(vector->capacity * 2, vector->capacity + other->size));\
         }\
         for(int i = vector->size - 1 + size; i > index + size - 1; --i) {\
             vector->_destructor(&vector->data[i]);\
@@ -361,7 +361,7 @@ extern inline void function_prefix##_insert_vector_range(name* vector, name* oth
 }\
 extern inline void function_prefix##_insert_array(name* vector, type* other, int index, int size){\
     if (vector->size + size > vector->capacity) {\
-        function_prefix##_reallocate(vector, max(vector->capacity * 2, size * 2));\
+        function_prefix##_reallocate(vector, max(vector->capacity * 2, vector->capacity + size));\
     }\
     for(int i = vector->size - 1 + size; i > index + size - 1; --i) {\
         vector->data[i] = vector->data[i-size];\
@@ -385,7 +385,7 @@ extern inline void function_prefix##_insert_array_range(name* vector, type* othe
     if (from <= to) {\
         int size = to - from + 1;\
         if (vector->size + size > vector->capacity) {\
-            function_prefix##_reallocate(vector, max(vector->capacity * 2, size * 2));\
+            function_prefix##_reallocate(vector, max(vector->capacity * 2, vector->capacity + size));\
         }\
         for(int i = vector->size - 1 + size; i > index + size - 1; --i) {\
             vector->_destructor(&vector->data[i]);\
@@ -400,7 +400,7 @@ extern inline void function_prefix##_insert_array_range(name* vector, type* othe
     else {\
         int size = from - to + 1;\
         if (vector->size + size > vector->capacity) {\
-            function_prefix##_reallocate(vector, max(vector->capacity * 2, size * 2));\
+            function_prefix##_reallocate(vector, max(vector->capacity * 2, vector->capacity + size));\
         }\
         for(int i = vector->size - 1 + size; i > index + size - 1; --i) {\
             vector->_destructor(&vector->data[i]);\
