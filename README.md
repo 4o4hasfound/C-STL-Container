@@ -711,11 +711,11 @@ for(ISet_Node* itr = iset_back_node(&set); itr != NULL; itr = iset_next_backward
     - function_prefix  
         - every function will be prefixed with void function_prefix  
 	- hasher  
-		- the hash function for type "keyT"  
+		- the hash function for type "type"  
 	- prober  
-		- the probe function for type "keyT"  
+		- the probe function for type "type"  
     - comparitor  
-        - the comparison function for type "keyT"  
+        - the comparison function for type "type"  
     - constructor  
         - the constructor for "type", pass NULL to use the default constructor(which is empty)  
     - copy_constructor  
